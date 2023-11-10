@@ -11,9 +11,7 @@ const getRepositoryClass = require('./middlewares/repositoryclasses').getReposit
 const getJDoctorCondition = require('./middlewares/jdoctorconditions').getJDoctorCondition;
 const getPreCondition = require('./middlewares/jdoctorconditions').getPreCondition;
 const getPostCondition = require('./middlewares/jdoctorconditions').getPostCondition;
-const getThrowsCondition = require('./middlewares/jdoctorconditions').getThrowsCondition;
-const JSZip = require('jszip');
-const fs = require('fs');
+const getThrowsCondition = require('./middlewares/jdoctorconditions').getThrowsCondition;;
 
 // Get all repositories
 router.get(
@@ -21,7 +19,6 @@ router.get(
     async (req, res) => {
         try {
             const repositories = await Repository.find();
-            console.log(repositories);
             res.json(repositories);
         } catch (e) {
             res.status(500).json({ message: e.message });
@@ -139,7 +136,6 @@ router.post(
     async (req, res) => {
         // Get the repository to create
         const repository = req.body.repository;
-        console.log(repository);
         // Generate repository document
         const repositoryDocument = new Repository({
             projectName: repository.projectName,
@@ -152,7 +148,6 @@ router.post(
         try {
             // Save document to database
             await repositoryDocument.save();
-            console.log(repositoryDocument);
             res.status(201).json(repositoryDocument);
         } catch (e) {
             res.status(400).json({ message: e.message });

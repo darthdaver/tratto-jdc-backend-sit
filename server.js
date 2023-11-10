@@ -1,7 +1,6 @@
 const dotenv = require('dotenv');
 const express = require('express');
 const app = express();
-const mongoose = require('mongoose');
 const cors = require('cors');
 const db = require('./config/db');
 
@@ -42,5 +41,9 @@ const repositoriesRouter = require('./routes/repositories').router;
 app.use('/repositories', repositoriesRouter);
 const exportRouter = require('./routes/export').router;
 app.use('/export', exportRouter);
+const usersRouter = require('./routes/users').router;
+app.use('/users', usersRouter);
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000, () => {
+    console.log(`Server listening on port ${process.env.PORT || 3000}`);
+});
