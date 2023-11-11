@@ -1,0 +1,5 @@
+runtime: nodejs16
+env_variables:
+  HOMEWORK_DB_PATH: ./homework_db/repositories
+  MONGODB_URI_CLOUD_STUDENTS: mongodb+srv://star:azTmy7jnRGpLy8SX@serverlessinstance0.icdrokq.mongodb.net/?retryWrites=true&w=majority
+  PERMIT: student
