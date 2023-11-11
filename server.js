@@ -13,6 +13,7 @@ db.connect();
 // Allow all origin
 const allowedOrigins = [
     "http://localhost:5173",
+    "http://localhost:5174",
     "https://tratto-jdc.onrender.com",
     "https://tratto-jdc-api.onrender.com",
     "https://star.inf.usi.ch"

@@ -29,21 +29,30 @@ async function createUserRepositories() {
             delete repositoryObj._id;
             try {
                 const result = await axios.post(`http://localhost:${port}/repositories`, { repository: repositoryObj });
+                await new Promise(resolve => setTimeout(resolve, ));
                 repository = result.data;
+                //console.log(repository)
                 userRepositoriesIds.push({
-                    id: repository._id,
-                    name: repository.name
+                    _id: repository._id,
+                    name: repository.projectName
                 });
             } catch (error) {
                 console.error(error);
             }
 
             for (const repositoryFile of repositoryFiles) {
-                if (!(repositoryFile == 'repository.json')) {
+                if (
+                    repositoryFile == 'net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel.json' ||
+                    repositoryFile == 'io.lettuce.core.RedisURI.json' ||
+                    repositoryFile == 'org.jfree.data.xy.DefaultXYDataset.json' ||
+                    repositoryFile == 'org.apache.commons.cli.HelpFormatter.json'
+                ) {
+                    console.log(`Repository file: ${repositoryFile}`);
                     const repositoryClassObj = JSON.parse(fs.readFileSync(`${directoryPath}/${directory}/${repositoryFile}`));
                     delete repositoryClassObj._id;
                     const repositoryId = repository._id;
                     const result = await axios.post(`http://localhost:${port}/repositories/${repositoryId}/repositoryClasses`, { repositoryClass: { name: repositoryClassObj.name, jDoctorConditions: [] } });
+                    await new Promise(resolve => setTimeout(resolve, 100));
                     const repositoryClass = result.data;
                     const repositoryClassId = repositoryClass._id;
                     for (const jDoctorConditionObj of repositoryClassObj.jDoctorConditions) {
@@ -57,19 +66,23 @@ async function createUserRepositories() {
                                 post: [],
                                 throws: []
                             } });
+                        await new Promise(resolve => setTimeout(resolve, 100));
                         const jDoctorCondition = result.data;
                         const jDoctorConditionId = jDoctorCondition._id;
                         for (const preconditionObj of jDoctorConditionObj.pre) {
                             delete preconditionObj._id;
                             const result = await axios.post(`http://localhost:${port}/repositories/${repositoryId}/repositoryClasses/${repositoryClassId}/jdoctorconditions/${jDoctorConditionId}/pre`, { condition: preconditionObj });
+                            await new Promise(resolve => setTimeout(resolve, 100));
                         }
                         for (const postconditionObj of jDoctorConditionObj.post) {
                             delete postconditionObj._id;
                             const result = await axios.post(`http://localhost:${port}/repositories/${repositoryId}/repositoryClasses/${repositoryClassId}/jdoctorconditions/${jDoctorConditionId}/post`, { condition: postconditionObj });
+                            await new Promise(resolve => setTimeout(resolve, 100));
                         }
                         for (const throwsconditionObj of jDoctorConditionObj.throws) {
                             delete throwsconditionObj._id;
                             const result = await axios.post(`http://localhost:${port}/repositories/${repositoryId}/repositoryClasses/${repositoryClassId}/jdoctorconditions/${jDoctorConditionId}/throws`, { condition: throwsconditionObj });
+                            await new Promise(resolve => setTimeout(resolve, 100));
                         }
                     }
                 }
@@ -77,7 +90,7 @@ async function createUserRepositories() {
         }
         return userRepositoriesIds;
     } catch (error) {
-        //console.error(error);
+        console.error(error);
     }
 }
 
@@ -90,13 +103,19 @@ async function createUserRepositories() {
             const password = generateRandomPassword(12);
             const repositoriesIds = await createUserRepositories();
 
+            console.log("Repositories IDs:");
+            console.log(repositoriesIds);
+
             const student = {
                 email: email,
                 password: password,
                 repositories: repositoriesIds
             };
+            console.log("Student:");
+            console.log(student)
 
             const result = await axios.post(`http://localhost:${port}/users/signup`, student);
+            await new Promise(resolve => setTimeout(resolve, 100));
             console.log(`Student added.`)
             students.push(student);
         }

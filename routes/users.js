@@ -1,5 +1,6 @@
 const express = require('express');
 const {getRepository} = require("./middlewares/repositories");
+const {getUser} = require("./middlewares/users");
 const router = express.Router();
 const User = require('../models/User').User;
 const Repository = require('../models/Repository').Repository;
@@ -13,6 +14,7 @@ router.post(
             return acc;
         }, {});
         if (!(req.body.email in usersDict)) {
+            console.log(req.body)
             const user = new User({
                 user: {
                     email: req.body.email,

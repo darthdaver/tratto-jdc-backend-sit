@@ -276,9 +276,14 @@ router.post(
             jDoctorConditionDocument.save();
             // Get repository class
             const repositoryClass = res.repositoryClass;
+            let name = jDoctorConditionDocument.operation.name;
+            if (name == repositoryClass.name) {
+                name = name.substring(name.lastIndexOf(".") + 1)
+            }
+            name += `(${jDoctorConditionDocument.identifiers.parameters.join(", ")})`;
             repositoryClass.jDoctorConditions.push({
                 _id: jDoctorConditionDocument._id,
-                name: jDoctorConditionDocument.operation.name
+                name: name
             });
             repositoryClass.save();
             res.status(201).json(jDoctorConditionDocument);

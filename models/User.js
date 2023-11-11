@@ -7,7 +7,7 @@ const UserSchema = new mongoose.Schema({
         password: String
     },
     repositories: [{
-        id: String,
+        _id: String,
         name: String
     }]
 })
