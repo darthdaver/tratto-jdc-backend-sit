@@ -17,7 +17,7 @@ const allowedOrigins = [
     "https://tratto-jdc.onrender.com",
     "https://tratto-jdc-api.onrender.com",
     "https://star.inf.usi.ch",
-    "https://tratto-students-frontend.onrender.com/"
+    "https://tratto-students-frontend.onrender.com"
 ];
 
 const corsOptions = {
