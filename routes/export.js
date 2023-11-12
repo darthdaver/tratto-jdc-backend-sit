@@ -88,6 +88,8 @@ router.get(
     async (req, res) => {
         try {
             const zip = new JSZip();
+            console.log(req.params.idUser)
+            console.log(res.user)
             const user = res.user;
             const repositories = await Repository.find({ _id: { $in: user.repositories } });
             const folderStructure = {
