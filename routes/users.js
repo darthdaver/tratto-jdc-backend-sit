@@ -62,19 +62,21 @@ router.post(
 );
 
 router.post(
-    ':idUser/assign/:idRepository',
+    '/:idUser/assign',
     getUser,
-    getRepository,
     async (req, res) => {
         const user = res.user;
-        const repository = res.repository;
+        const repository = await Repository.findById(req.body._id);
+        if (repository == null) {
+            return res.status(404).json({ message: "Cannot find repository" });
+        }
         if (user.repositories.includes(repository._id)) {
             res.status(400).json({ message: "User already assigned to this repository" });
             return;
         }
         user.repositories.push({
             id: repository._id,
-            name: repository.name
+            name: repository.projectName
         });
         try {
             await user.save();

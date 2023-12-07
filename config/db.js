@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const connect = async () => {
     try {
-        const connection = await mongoose.connect(process.env.MONGODB_URI_CLOUD_STUDENTS, {
+        const connection = await mongoose.connect(process.env.MONGODB_URI_CLOUD_ASSIGNMENT, {
             useNewUrlParser: true
         })
         console.log(`Mongo Connected: ${connection.connection.host}`);
